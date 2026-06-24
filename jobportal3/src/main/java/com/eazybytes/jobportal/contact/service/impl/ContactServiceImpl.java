@@ -27,6 +27,7 @@ public class ContactServiceImpl implements IContactService {
         if (contact != null && contact.getId () != null) {
             result = true;
         }
+
         return result;
     }
 
