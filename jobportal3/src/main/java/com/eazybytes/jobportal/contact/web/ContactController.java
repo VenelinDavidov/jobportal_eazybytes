@@ -18,18 +18,20 @@ public class ContactController {
     private final IContactService contactService;
 
     @PostMapping(version = "1.0")
-    public ResponseEntity<String> saveContactMsg(@RequestBody ContactRequestDto contactRequestDto) {
+    public ResponseEntity <String> saveContactMsg(@RequestBody ContactRequestDto contactRequestDto) {
 
-       boolean isSaved = contactService.saveContactMsg (contactRequestDto);
 
-         if (isSaved) {
-              return ResponseEntity
-                      .status (HttpStatus.CREATED)
-                      .body("Contact message saved successfully.");
-         } else {
-              return ResponseEntity
-                      .status(HttpStatus.INTERNAL_SERVER_ERROR).
-                      body("Failed to save contact message.");
-         }
-   }
+        boolean isSaved = contactService.saveContactMsg (contactRequestDto);
+
+        if (isSaved) {
+            return ResponseEntity
+                    .status (HttpStatus.CREATED)
+                    .body ("Contact message saved successfully.");
+        } else {
+            return ResponseEntity
+                    .status (HttpStatus.INTERNAL_SERVER_ERROR).
+                    body ("Failed to save contact message.");
+        }
+
+    }
 }
