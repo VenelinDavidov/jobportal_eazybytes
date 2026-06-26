@@ -3,11 +3,14 @@ package com.eazybytes.jobportal.exception;
 import com.eazybytes.jobportal.contact.web.dto.ErrorResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -23,6 +26,23 @@ public class GlobalExceptionHandler {
         );
 
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    ResponseEntity<Map <String,String >> handleException(MethodArgumentNotValidException ex) {
+
+        Map<String, String> errors = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .collect(
+                        Collectors.toMap(
+                                         fieldError -> fieldError.getField(),
+                                         fieldError -> fieldError.getDefaultMessage()
+                         )
+                );
+
+        return ResponseEntity.badRequest().body(errors);
     }
 
 
