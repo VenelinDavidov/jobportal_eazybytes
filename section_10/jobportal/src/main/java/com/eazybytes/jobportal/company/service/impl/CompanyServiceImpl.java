@@ -21,14 +21,21 @@ public class CompanyServiceImpl implements ICompanyService {
 
     @Override
     public List<CompanyDto> getAllCompanies() {
-        List<Company> companyList =companyRepository.findAll();
-        return companyList.stream().map(this::transformCompanyToDto).collect(Collectors.toList());
+
+        List<Company> companyList = companyRepository.findAll();
+
+        return companyList.stream()
+                           .map(this::transformCompanyToDto)
+                           .collect(Collectors.toList());
     }
 
     private CompanyDto transformCompanyToDto(Company company) {
-        List<JobDto> jobDtos = company.getJobs().stream()
-                .map(this::transformJobToDto)
-                .collect(Collectors.toList());
+
+        List<JobDto> jobDtos = company.getJobs()
+                                      .stream()
+                                      .map(this::transformJobToDto)
+                                      .collect(Collectors.toList());
+
         return new CompanyDto(company.getId(), company.getName(), company.getLogo(),
                 company.getIndustry(), company.getSize(), company.getRating(),
                 company.getLocations(), company.getFounded(), company.getDescription(),

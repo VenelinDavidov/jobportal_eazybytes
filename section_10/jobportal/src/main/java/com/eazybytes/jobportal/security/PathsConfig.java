@@ -10,6 +10,7 @@ public class PathsConfig {
 
     @Bean(name = "publicPaths")
     public List<String> publicPaths() {
+
         return List.of(
                 "/api/companies/public",
                 "/api/contacts/public",

@@ -33,8 +33,9 @@ public class JobPortalSecurityConfig {
 
     @Bean
     SecurityFilterChain customSecurityFilterChain(HttpSecurity http) {
+
         return http.csrf(csrfConfig -> csrfConfig.disable())
-                .cors(corsConfig -> corsConfig.configurationSource(corsConfigurationSource()))
+                    .cors(corsConfig -> corsConfig.configurationSource(corsConfigurationSource()))
                     .authorizeHttpRequests(requests -> {
                         publicPaths.forEach(path -> requests.requestMatchers(path).permitAll());
                         securedPaths.forEach(path -> requests.requestMatchers(path).authenticated());
@@ -59,6 +60,7 @@ public class JobPortalSecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
         config.setAllowedMethods(Collections.singletonList("*"));
