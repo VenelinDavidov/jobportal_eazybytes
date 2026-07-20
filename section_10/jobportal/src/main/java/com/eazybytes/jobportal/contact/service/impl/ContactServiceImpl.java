@@ -20,6 +20,7 @@ public class ContactServiceImpl implements IContactService {
     public boolean saveContact(ContactRequestDto contactRequestDto) {
         boolean result = false;
         Contact contact = contactRepository.save(transformToEntity(contactRequestDto));
+        
         if(contact != null && contact.getId() != null) {
             result = true;
         }
@@ -27,6 +28,7 @@ public class ContactServiceImpl implements IContactService {
     }
 
     private Contact transformToEntity(ContactRequestDto contactRequestDto) {
+
         Contact contact = new Contact();
         BeanUtils.copyProperties(contactRequestDto, contact);
 //        contact.setCreatedAt(Instant.now());

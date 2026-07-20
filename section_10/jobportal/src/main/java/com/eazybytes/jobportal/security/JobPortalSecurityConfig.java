@@ -8,6 +8,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
@@ -34,7 +39,7 @@ public class JobPortalSecurityConfig {
     @Bean
     SecurityFilterChain customSecurityFilterChain(HttpSecurity http) {
 
-        return http.csrf(csrfConfig -> csrfConfig.disable())
+        return  http.csrf(csrfConfig -> csrfConfig.disable())
                     .cors(corsConfig -> corsConfig.configurationSource(corsConfigurationSource()))
                     .authorizeHttpRequests(requests -> {
                         publicPaths.forEach(path -> requests.requestMatchers(path).permitAll());
@@ -62,6 +67,7 @@ public class JobPortalSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
 
         CorsConfiguration config = new CorsConfiguration();
+
         config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
         config.setAllowedMethods(Collections.singletonList("*"));
         config.setAllowedHeaders(Collections.singletonList("*"));
@@ -70,6 +76,23 @@ public class JobPortalSecurityConfig {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
+
         return source;
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+
+     var user1 = User.builder().username ("madan").password (passwordEncoder().encode ("Madan@123"))
+             .roles ("USER").build ();
+     var user2 = User.builder().username ("venko").password (passwordEncoder().encode ("Venko@123"))
+             .roles ("ADMIN").build ();
+
+     return new InMemoryUserDetailsManager (user1, user2);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder ();
     }
 }

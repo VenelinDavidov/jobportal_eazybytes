@@ -36,11 +36,39 @@ public class CompanyServiceImpl implements ICompanyService {
                                       .map(this::transformJobToDto)
                                       .collect(Collectors.toList());
 
-        return new CompanyDto(company.getId(), company.getName(), company.getLogo(),
-                company.getIndustry(), company.getSize(), company.getRating(),
-                company.getLocations(), company.getFounded(), company.getDescription(),
-                company.getEmployees(), company.getWebsite(), company.getCreatedAt(),jobDtos);
+
+        return new CompanyDto(
+                company.getId(),
+                company.getName(),
+                company.getLogo(),
+                company.getIndustry(),
+                company.getSize(),
+                company.getRating(),
+                company.getLocations(),
+                company.getFounded(),
+                company.getDescription(),
+                company.getEmployees(),
+                company.getWebsite(),
+                company.getCreatedAt(),
+                jobDtos
+        );
     }
+//
+//return CompanyDto.builder()
+//        .id(company.getId())
+//            .name(company.getName())
+//            .logo(company.getLogo())
+//            .industry(company.getIndustry())
+//            .size(company.getSize())
+//            .rating(company.getRating())
+//            .locations(company.getLocations())
+//            .founded(company.getFounded())
+//            .description(company.getDescription())
+//            .employees(company.getEmployees())
+//            .website(company.getWebsite())
+//            .createdAt(company.getCreatedAt())
+//            .jobs(jobDtos)
+//        .build();
 
 
 

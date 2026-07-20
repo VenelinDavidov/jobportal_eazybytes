@@ -20,13 +20,15 @@ public class ContactController {
 
     @PostMapping(path = "/public", version = "1.0")
     public ResponseEntity<String> saveContactMsg(@RequestBody @Valid ContactRequestDto contactRequestDto) {
+
         boolean isSaved =  contactService.saveContact(contactRequestDto);
+
         if (isSaved) {
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body("Request processed successfully");
+                                 .body("Request processed successfully");
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Request processing failed");
+                                 .body("Request processing failed");
         }
     }
 
