@@ -6,6 +6,9 @@ import org.springframework.boot.security.autoconfigure.web.servlet.SecurityFilte
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -61,7 +64,6 @@ public class JobPortalSecurityConfig {
     }
 
 
-    
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -83,13 +85,27 @@ public class JobPortalSecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
 
-     var user1 = User.builder().username ("madan").password (passwordEncoder().encode ("Madan@123"))
+     var user1 = User.builder().username ("Madan")
+             .password (passwordEncoder().encode ("Madan@123"))
              .roles ("USER").build ();
-     var user2 = User.builder().username ("venko").password (passwordEncoder().encode ("Venko@123"))
+
+     var user2 = User.builder().username ("Venko")
+             .password (passwordEncoder().encode ("Venko@123"))
              .roles ("ADMIN").build ();
 
      return new InMemoryUserDetailsManager (user1, user2);
     }
+
+    @Bean
+    public AuthenticationManager authenticationManager() {
+
+        var authenticationProvider = new DaoAuthenticationProvider (userDetailsService ());
+        authenticationProvider.setPasswordEncoder (passwordEncoder());
+
+        return new ProviderManager (authenticationProvider);
+    }
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
