@@ -53,7 +53,7 @@ public class AuthController {
     private ResponseEntity <LoginResponseDto> buildErrorResponseDto(HttpStatus status, String message) {
 
         return ResponseEntity
-                .status (status)
-                .body (new LoginResponseDto (message, null, null));
+                             .status (status)
+                             .body (new LoginResponseDto (message, null, null));
     }
 }

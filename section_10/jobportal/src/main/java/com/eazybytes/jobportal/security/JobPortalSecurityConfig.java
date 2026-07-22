@@ -82,15 +82,26 @@ public class JobPortalSecurityConfig {
         return source;
     }
 
+
     @Bean
     public UserDetailsService userDetailsService() {
 
-     var user1 = User.builder().username ("Madan")
-             .password (passwordEncoder().encode ("Madan@123"))
+
+// encoding the password
+
+//        var password1= passwordEncoder().encode ("Madan@123");
+//        System.out.println (password1);
+//        var password2= passwordEncoder().encode ("Venko@123");
+//        System.out.println (password2);
+
+     var user1 = User.builder()
+             .username ("Madan")
+             .password ("$2a$10$R3Gse9c.ZxnjU.S9V48X/u3hXB4jWlBHNPhpOiQyrBXbR9B/EIjaK")
              .roles ("USER").build ();
 
-     var user2 = User.builder().username ("Venko")
-             .password (passwordEncoder().encode ("Venko@123"))
+     var user2 = User.builder()
+             .username ("Venko")
+             .password ("$2a$10$QB4Z6vVkvCwKe4K9ORUDIuRBaeV7y00yhHFptWbObAPnT.0AZO3a2")
              .roles ("ADMIN").build ();
 
      return new InMemoryUserDetailsManager (user1, user2);
