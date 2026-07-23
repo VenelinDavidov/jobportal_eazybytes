@@ -86,8 +86,7 @@ public class JobPortalSecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
 
-
-// encoding the password
+// Еncoding the password and replace them
 
 //        var password1= passwordEncoder().encode ("Madan@123");
 //        System.out.println (password1);

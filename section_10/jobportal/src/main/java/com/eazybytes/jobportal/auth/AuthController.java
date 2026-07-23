@@ -31,7 +31,8 @@ public class AuthController {
     public ResponseEntity <LoginResponseDto> apiLogin(@RequestBody LoginRequestDto loginRequestDto) {
 
         try {
-            var resultAuthenticated = authenticationManager.authenticate (new UsernamePasswordAuthenticationToken (loginRequestDto.username (), loginRequestDto.password ()));
+            var resultAuthenticated = authenticationManager.authenticate (new UsernamePasswordAuthenticationToken
+                                      (loginRequestDto.username (), loginRequestDto.password ()));
             var userDto = new UserDto ();
 
             return ResponseEntity
@@ -49,6 +50,8 @@ public class AuthController {
         }
 
     }
+
+
 
     private ResponseEntity <LoginResponseDto> buildErrorResponseDto(HttpStatus status, String message) {
 
