@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 @Component
@@ -25,11 +26,12 @@ public class JwtUtil {
         String jwtToken;
 
         String secret = env.getProperty(ApplicationConstants.JWT_SECRET_KEY,
-                        ApplicationConstants.JWT_SECRET_DEFAULT_VALUE);
+                                        ApplicationConstants.JWT_SECRET_DEFAULT_VALUE);
         SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         var fetchedUser = (User) authentication.getPrincipal();
 
-        jwtToken = Jwts.builder().issuer("Job Portal").subject("JWT Token")
+        jwtToken = Jwts.builder()
+                .issuer("Job Portal").subject("JWT Token")
                 .claim("username", fetchedUser.getUsername())
                 .claim("roles", authentication.getAuthorities()
                                                     .stream()
@@ -37,8 +39,8 @@ public class JwtUtil {
                                                     GrantedAuthority::getAuthority)
                                                     .collect(Collectors.joining(",")
                 ))
-                .issuedAt(new java.util.Date())
-                .expiration(new java.util.Date((new java.util.Date()).getTime() + 24 * 60 * 60 * 1000))
+                .issuedAt(new Date ())
+                .expiration(new Date((new Date()).getTime() + 24 * 60 * 60 * 1000))
                 .signWith(secretKey).compact();
 
         return jwtToken;

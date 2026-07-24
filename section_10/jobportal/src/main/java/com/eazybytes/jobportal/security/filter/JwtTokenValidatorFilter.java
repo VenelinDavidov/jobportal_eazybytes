@@ -47,21 +47,24 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
 
                     if (null != env) {
 
-                        String secret = env.getProperty(ApplicationConstants.JWT_SECRET_KEY, ApplicationConstants.JWT_SECRET_DEFAULT_VALUE);
+                        String secret = env.getProperty(ApplicationConstants.JWT_SECRET_KEY,
+                                                        ApplicationConstants.JWT_SECRET_DEFAULT_VALUE);
+
                         SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
 
                         if (null != secretKey) {
-                            Claims claims = Jwts
-                                               .parser()
+                            Claims claims = Jwts.parser()
                                                .verifyWith(secretKey)
-                                               .build().parseSignedClaims(jwt)
+                                               .build()
+                                               .parseSignedClaims(jwt)
                                                .getPayload();
 
                             String username = String.valueOf(claims.get("username"));
                             String roles = String.valueOf(claims.get("roles"));
 
-                            Authentication authentication = new UsernamePasswordAuthenticationToken (username,
-                                    null, AuthorityUtils.commaSeparatedStringToAuthorityList(roles));
+                            Authentication authentication = new UsernamePasswordAuthenticationToken (
+                                    username, null, AuthorityUtils.commaSeparatedStringToAuthorityList(roles)
+                            );
 
                             SecurityContextHolder.getContext().setAuthentication(authentication);
                         }
@@ -81,6 +84,7 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         }
+
 
         @Override
         protected boolean shouldNotFilter(HttpServletRequest request) {
