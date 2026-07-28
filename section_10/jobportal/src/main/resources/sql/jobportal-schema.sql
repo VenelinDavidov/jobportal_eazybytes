@@ -1,7 +1,7 @@
 -- Create companies table
 CREATE TABLE IF NOT EXISTS companies (
-     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-     name VARCHAR(255) NOT NULL UNIQUE,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
     logo VARCHAR(500),
     industry VARCHAR(100) NOT NULL,
     size VARCHAR(50) NOT NULL,
@@ -62,3 +62,14 @@ CREATE TABLE IF NOT EXISTS jobs (
             updated_by VARCHAR(20) DEFAULT NULL,
             FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE
 );
+-- Create roles table
+CREATE TABLE IF NOT EXISTS roles (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by VARCHAR(20) NOT NULL,
+    updated_at TIMESTAMP DEFAULT NULL,
+    updated_by VARCHAR(20) DEFAULT NULL
+);
+
+-- Create users table

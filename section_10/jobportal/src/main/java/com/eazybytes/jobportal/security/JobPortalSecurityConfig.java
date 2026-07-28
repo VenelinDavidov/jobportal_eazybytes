@@ -100,12 +100,14 @@ public class JobPortalSecurityConfig {
      var user1 = User.builder()
              .username ("Madan")
              .password ("$2a$10$R3Gse9c.ZxnjU.S9V48X/u3hXB4jWlBHNPhpOiQyrBXbR9B/EIjaK")
-             .roles ("USER").build ();
+             .roles ("USER")
+             .build ();
 
      var user2 = User.builder()
              .username ("Venko")
              .password ("$2a$10$QB4Z6vVkvCwKe4K9ORUDIuRBaeV7y00yhHFptWbObAPnT.0AZO3a2")
-             .roles ("ADMIN").build ();
+             .roles ("ADMIN")
+             .build ();
 
      return new InMemoryUserDetailsManager (user1, user2);
     }

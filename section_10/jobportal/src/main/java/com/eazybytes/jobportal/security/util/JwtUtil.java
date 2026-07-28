@@ -28,6 +28,7 @@ public class JwtUtil {
         String secret = env.getProperty(ApplicationConstants.JWT_SECRET_KEY,
                                         ApplicationConstants.JWT_SECRET_DEFAULT_VALUE);
         SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+
         var fetchedUser = (User) authentication.getPrincipal();
 
         jwtToken = Jwts.builder()

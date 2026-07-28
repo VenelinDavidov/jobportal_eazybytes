@@ -8,4 +8,4 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: jobportal
     volumes:
-      - /Users/eazybytes/Desktop/jobportal-data:/var/lib/mysql
+      - ./jobportal-data:/var/lib/mysqldo
