@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface JobPortalUserRepository extends JpaRepository <JobPortalUser, Long> {
 
 
-    Optional <JobPortalUser> readUserByMobileNumber(String mobileNumber);
+    Optional <JobPortalUser> readUserByEmailOrMobileNumber(String email, String mobileNumber);
 
-    Optional <JobPortalUser> readUserByEmail(String email);
+
 }

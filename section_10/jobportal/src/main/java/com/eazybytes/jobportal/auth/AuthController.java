@@ -4,7 +4,7 @@ import com.eazybytes.jobportal.constants.ApplicationConstants;
 import com.eazybytes.jobportal.dto.LoginRequestDto;
 
 import com.eazybytes.jobportal.dto.LoginResponseDto;
-import com.eazybytes.jobportal.dto.RigisterRequestDto;
+import com.eazybytes.jobportal.dto.RegisterRequestDto;
 import com.eazybytes.jobportal.dto.UserDto;
 import com.eazybytes.jobportal.entity.JobPortalUser;
 import com.eazybytes.jobportal.entity.Role;
@@ -14,17 +14,15 @@ import com.eazybytes.jobportal.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 //import org.springframework.security.core.AuthenticationException;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.password.CompromisedPasswordChecker;
+import org.springframework.security.authentication.password.CompromisedPasswordDecision;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,6 +44,7 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final JobPortalUserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final CompromisedPasswordChecker compromisedPasswordChecker;
 
 
     @PostMapping(value = "/login/public", version = "1.0")
@@ -75,20 +74,29 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register/public", version = "1.0")
-    public ResponseEntity <?> registerUser(@RequestBody RigisterRequestDto rigisterRequestDto) {
+    public ResponseEntity <?> registerUser(@RequestBody RegisterRequestDto registerRequestDto) {
 
-        Optional <JobPortalUser> existingUser = userRepository.readUserByMobileNumber (rigisterRequestDto.mobileNumber ());
+        CompromisedPasswordDecision decision = compromisedPasswordChecker.check (registerRequestDto.password ());
+
+        if (decision.isCompromised ()){
+            return ResponseEntity
+                    .status (HttpStatus.BAD_REQUEST)
+                    .body (Map.of ( "password","Choose a stronger password!"));
+        }
+
+        Optional <JobPortalUser> existingUser =
+                       userRepository.readUserByEmailOrMobileNumber (registerRequestDto.email (), registerRequestDto.mobileNumber ());
 
         if (existingUser.isPresent ()) {
 
            Map <String, String> errorResponse = new HashMap <> ();
            JobPortalUser jobPortalUser = existingUser.get ();
 
-            if(jobPortalUser.getEmail ().equalsIgnoreCase (rigisterRequestDto.email ())) {
+            if(jobPortalUser.getEmail ().equalsIgnoreCase (registerRequestDto.email ())) {
                 errorResponse.put ("email", "Email already registered!");
             }
 
-            if(jobPortalUser.getMobileNumber ().equals ( rigisterRequestDto.mobileNumber ())){
+            if(jobPortalUser.getMobileNumber ().equals ( registerRequestDto.mobileNumber ())){
                 errorResponse.put ("mobileNumber", "Mobile number already registered!");
             }
             return ResponseEntity
@@ -98,8 +106,8 @@ public class AuthController {
 
 
         JobPortalUser jobPortalUser = new JobPortalUser();
-        BeanUtils.copyProperties (rigisterRequestDto, jobPortalUser);
-        jobPortalUser.setPasswordHash (passwordEncoder.encode (rigisterRequestDto.password ()));
+        BeanUtils.copyProperties (registerRequestDto, jobPortalUser);
+        jobPortalUser.setPasswordHash (passwordEncoder.encode (registerRequestDto.password ()));
 
         Role role = roleRepository.findRoleByName (ApplicationConstants.ROLE_JOB_SEEKER)
                   .orElseThrow (() -> new IllegalStateException ("Role not found: " + ApplicationConstants.ROLE_JOB_SEEKER));
