@@ -51,11 +51,16 @@ public class AuthController {
     public ResponseEntity <LoginResponseDto> apiLogin(@RequestBody LoginRequestDto loginRequestDto) {
 
         try {
-            var resultAuthenticated = authenticationManager.authenticate (new UsernamePasswordAuthenticationToken
-                                      (loginRequestDto.username (), loginRequestDto.password ()));
-            var userDto = new UserDto ();
+           var resultAuthenticated = authenticationManager.authenticate (new UsernamePasswordAuthenticationToken
+                                           (loginRequestDto.username (), loginRequestDto.password ()));
+
             // Generate JWT token
-            var jwtToken = jwtUtil.generateJwtToken (resultAuthenticated);
+            String jwtToken = jwtUtil.generateJwtToken (resultAuthenticated);
+            var userDto = new UserDto();
+            var loggedInUser = (JobPortalUser) resultAuthenticated.getPrincipal();
+            BeanUtils.copyProperties(loggedInUser, userDto);
+            userDto.setRole(loggedInUser.getRole().getName());
+            userDto.setUserId(loggedInUser.getId());
 
             return ResponseEntity
                                   .status (HttpStatus.OK)

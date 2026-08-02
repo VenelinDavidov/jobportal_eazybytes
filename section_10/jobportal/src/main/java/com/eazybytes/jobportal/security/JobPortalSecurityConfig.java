@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
@@ -42,6 +43,7 @@ public class JobPortalSecurityConfig {
 
     @Qualifier("securedPaths")
     private final List<String> securedPaths;
+
 
     @Bean
     SecurityFilterChain customSecurityFilterChain(HttpSecurity http) {
@@ -83,46 +85,41 @@ public class JobPortalSecurityConfig {
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-
         return source;
     }
 
 
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//
+//// Еncoding the password and replace them
+//
+////        var password1= passwordEncoder().encode ("Madan@123");
+////        System.out.println (password1);
+//
+////        var password2= passwordEncoder().encode ("Venko@123");
+////        System.out.println (password2);
+//
+//     var user1 = User.builder()
+//             .username ("Madan")
+//             .password ("$2a$10$R3Gse9c.ZxnjU.S9V48X/u3hXB4jWlBHNPhpOiQyrBXbR9B/EIjaK")
+//             .roles ("USER")
+//             .build ();
+//
+//     var user2 = User.builder()
+//             .username ("Venko")
+//             .password ("$2a$10$QB4Z6vVkvCwKe4K9ORUDIuRBaeV7y00yhHFptWbObAPnT.0AZO3a2")
+//             .roles ("ADMIN")
+//             .build ();
+//
+//     return new InMemoryUserDetailsManager (user1, user2);
+//    }
+
+
     @Bean
-    public UserDetailsService userDetailsService() {
-
-// Еncoding the password and replace them
-
-//        var password1= passwordEncoder().encode ("Madan@123");
-//        System.out.println (password1);
-
-//        var password2= passwordEncoder().encode ("Venko@123");
-//        System.out.println (password2);
-
-     var user1 = User.builder()
-             .username ("Madan")
-             .password ("$2a$10$R3Gse9c.ZxnjU.S9V48X/u3hXB4jWlBHNPhpOiQyrBXbR9B/EIjaK")
-             .roles ("USER")
-             .build ();
-
-     var user2 = User.builder()
-             .username ("Venko")
-             .password ("$2a$10$QB4Z6vVkvCwKe4K9ORUDIuRBaeV7y00yhHFptWbObAPnT.0AZO3a2")
-             .roles ("ADMIN")
-             .build ();
-
-     return new InMemoryUserDetailsManager (user1, user2);
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager() {
-
-        var authenticationProvider = new DaoAuthenticationProvider (userDetailsService ());
-        authenticationProvider.setPasswordEncoder (passwordEncoder());
-
+    public AuthenticationManager authenticationManager(AuthenticationProvider authenticationProvider) {
         return new ProviderManager (authenticationProvider);
     }
-
 
 
     @Bean
