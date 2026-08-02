@@ -22,6 +22,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -48,7 +50,9 @@ public class JobPortalSecurityConfig {
     @Bean
     SecurityFilterChain customSecurityFilterChain(HttpSecurity http) {
 
-        return  http.csrf(csrfConfig -> csrfConfig.disable())
+        return  http.csrf (csrf -> csrf.ignoringRequestMatchers ("/jobportal/actuator/**")
+                        .csrfTokenRepository (CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .csrfTokenRequestHandler (new CsrfTokenRequestAttributeHandler ()))
                     .cors(corsConfig -> corsConfig.configurationSource(corsConfigurationSource()))
                     .authorizeHttpRequests(requests -> {
                         publicPaths.forEach(path -> requests.requestMatchers(path).permitAll());

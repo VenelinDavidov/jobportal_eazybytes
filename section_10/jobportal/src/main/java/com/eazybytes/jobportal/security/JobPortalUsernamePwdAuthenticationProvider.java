@@ -28,7 +28,7 @@ public class JobPortalUsernamePwdAuthenticationProvider implements Authenticatio
     @Override
     public @Nullable Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        String username = authentication.getName();
+        String username = authentication.getName ();
         String pwd = authentication.getCredentials().toString();
 
         JobPortalUser jobPortalUser = jobPortalUserRepository.findJobPortalUserByEmail (username)
