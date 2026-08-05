@@ -12,6 +12,7 @@ public class CsrfController {
 
     @GetMapping(value = "/public", version = "1.0")
     public CsrfToken getCsrfToken(HttpServletRequest request) {
+
         return (CsrfToken) request.getAttribute(CsrfToken.class.getName());
     }
 }
