@@ -19,13 +19,11 @@ public class CompanyController {
 
     private final ICompanyService companyService;
 
-
+    // @LogAspect
     @GetMapping(path = "/public", version = "1.0")
     public ResponseEntity<List<CompanyDto>> getAllCompanies() {
 
-        log.info("Entering method: getAllCompanies()");
         List<CompanyDto> companyList = companyService.getAllCompanies();
-        log.info("Exiting method: getAllCompanies()");
         return ResponseEntity.ok()
                              .body(companyList);
     }
