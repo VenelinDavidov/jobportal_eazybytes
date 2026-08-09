@@ -13,4 +13,6 @@ public class ApplicationConstants {
 
     public static final String ROLE_JOB_SEEKER = "ROLE_JOB_SEEKER";
 
+    public static final String ACTIVE_STATUS = "ACTIVE";
+
 }

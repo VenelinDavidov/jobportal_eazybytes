@@ -27,6 +27,4 @@ public class CompanyController {
         return ResponseEntity.ok()
                              .body(companyList);
     }
-
-
 }
