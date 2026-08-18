@@ -17,4 +17,6 @@ public class ApplicationConstants {
     public static final String NEW_MESSAGE = "NEW";
     public static final String CLOSED_MESSAGE = "CLOSE";
 
+    public static final String SYSTEM = "SYSTEM";
+
 }
