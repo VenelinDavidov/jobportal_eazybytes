@@ -56,12 +56,9 @@ public class CompanyServiceImpl implements ICompanyService {
 
         int updatesRecords = companyRepository.updateCompanyDetails(
                 id, companyDto.name (),companyDto.logo (),
-                companyDto.industry (),
-                companyDto.size (),companyDto.rating (),
+                companyDto.industry (), companyDto.size (),companyDto.rating (),
                 companyDto.locations (),companyDto.founded (),
-                companyDto.description (),
-                companyDto.employees (),
-                companyDto.website ()
+                companyDto.description (), companyDto.employees (), companyDto.website ()
         );
         return updatesRecords > 0;
     }
