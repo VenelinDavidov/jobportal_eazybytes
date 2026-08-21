@@ -19,4 +19,7 @@ public interface ICompanyService {
     boolean updateCompanyDetails( Long id, CompanyDto companyDto);
 
     void deleteCompanyById(Long aLong);
+
+    List<CompanyDto> getAllCompaniesForAdmin();
+
 }

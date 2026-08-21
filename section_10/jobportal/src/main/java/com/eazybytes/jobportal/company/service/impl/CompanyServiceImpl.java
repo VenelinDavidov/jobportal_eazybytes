@@ -9,6 +9,7 @@ import com.eazybytes.jobportal.entity.Job;
 import com.eazybytes.jobportal.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +69,16 @@ public class CompanyServiceImpl implements ICompanyService {
     public void deleteCompanyById(Long id) {
 
         companyRepository.deleteById(id);
+    }
+
+    @Cacheable("companies")
+    @Override
+    public List <CompanyDto> getAllCompaniesForAdmin() {
+
+        List <Company> comapnyList = companyRepository.findAll ();
+        return comapnyList.stream()
+                          .map(this::transformCompanyToDtoForAdmin)
+                          .collect(Collectors.toList());
     }
 
 

@@ -5,6 +5,8 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -32,6 +34,13 @@ public interface CompanyRepository extends JpaRepository <Company, Long> {
 
     List <Company> fetchCompaniesWithJobsByStatusNative(String status);
 
+    @CacheEvict(value = "companies", allEntries = true)
+    Company save(Company entity);
+
+    @CacheEvict(value = "companies", allEntries = true)
+    void deleteById(Long id);
+
+    @CacheEvict(value = "companies", allEntries = true)
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     int updateCompanyDetails(@Param("id") Long id,
                              @Param("name") String name,
