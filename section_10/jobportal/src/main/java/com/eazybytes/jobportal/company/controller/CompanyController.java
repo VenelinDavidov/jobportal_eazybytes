@@ -29,12 +29,6 @@ public class CompanyController {
                              .body(companyList);
     }
 
-    @GetMapping(path = "/admin", version = "1.0")
-    public ResponseEntity<List<CompanyDto>> getAllCompaniesForAdmin() {
-       List<CompanyDto> companyList = companyService.getAllCompaniesForAdmin();
-       return ResponseEntity.ok()
-                            .body(companyList);
-    }
 
     @PostMapping(path = "/admin", version = "1.0")
     public ResponseEntity<String> createCompany(@RequestBody @Valid CompanyDto companyDto){

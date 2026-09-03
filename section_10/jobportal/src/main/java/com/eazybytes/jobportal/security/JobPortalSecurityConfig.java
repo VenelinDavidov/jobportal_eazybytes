@@ -64,8 +64,8 @@ public class JobPortalSecurityConfig {
                     .authorizeHttpRequests(requests -> {
                         publicPaths.forEach(path -> requests.requestMatchers(path).permitAll());
                         adminPaths.forEach(path -> requests.requestMatchers(path).hasRole("ADMIN"));
-                        securedPaths.forEach(path -> requests.requestMatchers(path).authenticated());
                         employerPaths.forEach(path -> requests.requestMatchers(path).hasRole("EMPLOYER"));
+                        securedPaths.forEach(path -> requests.requestMatchers(path).authenticated());
                         requests.anyRequest().denyAll();
                     })
 //                            requests.requestMatchers("/api/companies/public").permitAll()

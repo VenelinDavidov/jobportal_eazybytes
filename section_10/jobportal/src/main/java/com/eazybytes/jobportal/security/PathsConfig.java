@@ -8,13 +8,7 @@ import java.util.List;
 @Configuration
 public class PathsConfig {
 
-    @Bean(name = "employerPaths")
-    public List<String> employerPaths() {
-        return List.of(
-                "/api/jobs/employer",
-                "/api/jobs/${jobId}/status/employer"
-        );
-    }
+
 
     @Bean(name = "publicPaths")
     public List<String> publicPaths() {
@@ -41,6 +35,14 @@ public class PathsConfig {
     public List<String> securedPaths() {
         return List.of(
                 "/api/**"
+        );
+    }
+
+    @Bean(name = "employerPaths")
+    public List<String> employerPaths() {
+        return List.of(
+                "/api/jobs/employer",
+                "/api/jobs/${jobId}/status/employer"
         );
     }
 
