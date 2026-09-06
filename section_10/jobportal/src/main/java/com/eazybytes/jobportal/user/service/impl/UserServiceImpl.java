@@ -88,6 +88,8 @@ public class UserServiceImpl implements UserService {
         return mapToUserDto(user);
     }
 
+
+
     @Transactional
     @Override
     public ProfileDto createOrUpdateProfile(String userEmail, String profileJson, MultipartFile profilePicture, MultipartFile resume)
@@ -105,6 +107,42 @@ public class UserServiceImpl implements UserService {
         ProfileDto profileDto = objectMapper.readValue (profileJson, ProfileDto.class);
         Profile savedProfile = profileRepository.save(mapToProfile(profile, profileDto, profilePicture, resume));
         return mapToProfileDto(savedProfile, false);
+    }
+
+    @Override
+    public ProfileDto getProfile(String userEmail) {
+
+        JobPortalUser user = userRepository.findJobPortalUserByEmail (userEmail)
+                .orElseThrow (() -> new RuntimeException ("User not found with email: " + userEmail));
+
+        if (user.getProfile ()== null) {
+            return null;
+        }
+
+        return mapToProfileDto(user.getProfile(), false);
+    }
+
+    @Override
+    public ProfileDto getProfilePicture(String userEmail) {
+
+        JobPortalUser user = userRepository.findJobPortalUserByEmail (userEmail)
+                .orElseThrow (() -> new RuntimeException ("User not found with email: " + userEmail));
+        if (user.getProfile () == null ){
+            return null;
+        }
+        return mapToProfileDto(user.getProfile(), true);
+    }
+
+    @Override
+    public ProfileDto getResume(String userEmail) {
+
+        JobPortalUser user = userRepository.findJobPortalUserByEmail (userEmail)
+                .orElseThrow (() -> new RuntimeException ("User not found with email: " + userEmail));
+
+        if (user.getProfile () == null ){
+            return null;
+        }
+        return mapToProfileDto(user.getProfile(), true);
     }
 
 
