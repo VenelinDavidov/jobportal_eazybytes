@@ -1,14 +1,13 @@
 package com.eazybytes.jobportal.user.service.impl;
 
 import com.eazybytes.jobportal.constants.ApplicationConstants;
+import com.eazybytes.jobportal.dto.JobDto;
 import com.eazybytes.jobportal.dto.ProfileDto;
 import com.eazybytes.jobportal.dto.UserDto;
-import com.eazybytes.jobportal.entity.Company;
-import com.eazybytes.jobportal.entity.JobPortalUser;
-import com.eazybytes.jobportal.entity.Profile;
-import com.eazybytes.jobportal.entity.Role;
+import com.eazybytes.jobportal.entity.*;
 import com.eazybytes.jobportal.repository.*;
 import com.eazybytes.jobportal.user.service.UserService;
+import com.eazybytes.jobportal.util.ApplicationUtility;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -104,6 +103,7 @@ public class UserServiceImpl implements UserService {
             profile.setUser(user);
         }
         ObjectMapper objectMapper = new ObjectMapper();
+        // Parse JSON string to ProfileDto
         ProfileDto profileDto = objectMapper.readValue (profileJson, ProfileDto.class);
         Profile savedProfile = profileRepository.save(mapToProfile(profile, profileDto, profilePicture, resume));
         return mapToProfileDto(savedProfile, false);
@@ -143,6 +143,22 @@ public class UserServiceImpl implements UserService {
             return null;
         }
         return mapToProfileDto(user.getProfile(), true);
+    }
+
+    @Transactional
+    @Override
+    public JobDto saveJob(String userEmail, Long jobId) {
+
+      // Validate user exist
+        JobPortalUser user = userRepository.findJobPortalUserByEmail (userEmail)
+                .orElseThrow (() -> new RuntimeException ("User not found with email: " + userEmail));
+      // Validate job exist
+        Job job = jobRepository.findById (jobId)
+                .orElseThrow (() -> new RuntimeException ("Job not found with ID: " + jobId));
+
+        user.getSavedJobs().add(job);
+       // userRepository.save (user);
+        return ApplicationUtility.transformJobToDto (job);
     }
 
 

@@ -1,6 +1,7 @@
 package com.eazybytes.jobportal.user.service;
 
 
+import com.eazybytes.jobportal.dto.JobDto;
 import com.eazybytes.jobportal.dto.ProfileDto;
 import com.eazybytes.jobportal.dto.UserDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,4 +26,5 @@ public interface UserService {
 
     ProfileDto getResume(String userEmail);
 
+    JobDto saveJob(String userEmail, Long jobId);
 }

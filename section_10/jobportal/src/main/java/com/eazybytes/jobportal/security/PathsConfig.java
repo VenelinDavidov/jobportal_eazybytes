@@ -48,6 +48,7 @@ public class PathsConfig {
                 "/api/users/saved-jobs/jobseeker",
                 "/api/users/job-applications/jobseeker",
                 "/api/users/job-applications/${jobId}/jobseeker"
+
         );
     }
 

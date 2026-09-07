@@ -2,11 +2,13 @@ package com.eazybytes.jobportal.user.controller;
 
 
 
+import com.eazybytes.jobportal.dto.JobDto;
 import com.eazybytes.jobportal.dto.ProfileDto;
 import com.eazybytes.jobportal.dto.UserDto;
 import com.eazybytes.jobportal.user.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -105,5 +107,16 @@ public class UserController {
         headers.setContentDispositionFormData ("attachment", profileDto.resumeName());
 
         return new ResponseEntity<>(resume, headers, HttpStatus.OK);
+    }
+
+
+    @PostMapping(value = "/saved-jobs/{jobId}/jobseeker", version = "1.0")
+    private ResponseEntity<JobDto> saveJob(@PathVariable Long jobId, Authentication authentication){
+
+        String userEmail = authentication.getName ();
+        JobDto savedJob = userService.saveJob(userEmail, jobId);
+
+        return ResponseEntity.status (HttpStatus.CREATED)
+                             .body (savedJob);
     }
 }
