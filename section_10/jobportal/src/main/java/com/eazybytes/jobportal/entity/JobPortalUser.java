@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.jspecify.annotations.NonNull;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -58,5 +59,9 @@ public class JobPortalUser extends BaseEntity {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "job_id"))
     private Set <Job> savedJobs = new LinkedHashSet <> ();
+
+
+    @OneToMany(mappedBy = "user")
+    private Set <JobApplication> jobApplications = new LinkedHashSet <> ();
 
 }

@@ -14,16 +14,16 @@ public class PathsConfig {
     public List<String> publicPaths() {
 
         return List.of(
-                "/api/auth/login/public",
                 "/api/contacts/public",
+                "/api/auth/login/public",
+                "/api/companies/public",
+                "/api/auth/register/public",
+                "/api/csrf-token/public",
                 "/api/logging/public",
                 "/api/swagger-ui.html",
-                "/api/companies/public",
-                "/api/csrf-token/public",
                 "/swagger-ui/**",
                 "/api/v3/api-docs/**",
                 "/swagger-resources/**",
-                "/api/auth/register/public",
                 "/swagger-ui.html",
                 "/webjars/**"
         );
@@ -71,7 +71,7 @@ public class PathsConfig {
                 "/api/companies/${id}/admin",
                 "/api/users/search/admin",
                 "/api/users/${userId}/role/employer/admin",
-                "/api/users/${userId}/company/{companyId}/admin"
+                "/api/users/${userId}/role/employer/admin"
         );
     }
 

@@ -21,5 +21,8 @@ public class ApplicationConstants {
 
     public static final String ROLE_EMPLOYER = "ROLE_EMPLOYER";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String PENDING_STATUS = "PENDING";
+    public static final String ACCEPTED_STATUS = "ACCEPTED";
+    public static final String REJECTED_STATUS = "REJECTED";
 
 }

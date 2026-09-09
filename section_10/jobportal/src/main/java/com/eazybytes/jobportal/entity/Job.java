@@ -128,4 +128,7 @@ public class Job extends BaseEntity {
     @ManyToMany(mappedBy = "savedJobs")
     private Set <JobPortalUser> savedByUsers = new LinkedHashSet <> ();
 
+    @OneToMany(mappedBy = "job")
+    private Set <JobApplication> jobApplications = new LinkedHashSet <> ();
+
 }
