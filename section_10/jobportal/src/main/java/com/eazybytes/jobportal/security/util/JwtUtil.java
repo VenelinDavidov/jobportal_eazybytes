@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -31,14 +33,25 @@ public class JwtUtil {
     @Value("${jwt.subject:JWT Token}")
     private String jwtSubject;
 
-    @Value("${jwt.experation.hours:1}")
+    @Value("${jwt.expiration.hours:1}")
     private int jwtExpirationHours;
+
+    @Value("${jwt.prod.expiration.hours:1}")
+    private int jwtProdExpirationHours;
 
 
     public String generateJwtToken(Authentication authentication) {
 
         String jwtToken;
-        String ttlTime = env.getProperty ("cache.jobs.ttl-minutes", "5");
+        int expirationHours = jwtExpirationHours;
+//        String ttlTime = env.getProperty ("cache.jobs.ttl-minutes", "5");
+
+        List <String> profiles = Arrays.asList (env.getActiveProfiles ());
+
+        if (profiles.contains("prod")) {
+            expirationHours = jwtProdExpirationHours;
+        }
+
         String secret = env.getProperty(ApplicationConstants.JWT_SECRET_KEY,
                                         ApplicationConstants.JWT_SECRET_DEFAULT_VALUE);
 
@@ -56,7 +69,7 @@ public class JwtUtil {
                                                                      .collect(Collectors.joining(",")
                                  ))
                 .issuedAt(new Date ())
-                .expiration(new Date((new Date()).getTime() + jwtExpirationHours * 60 * 60 * 1000))
+                .expiration(new Date((new Date()).getTime() + expirationHours * 60 * 60 * 1000))
                 .signWith(secretKey).compact();
 
         return jwtToken;
