@@ -4,6 +4,7 @@ import com.eazybytes.jobportal.entity.JobPortalUser;
 import com.eazybytes.jobportal.repository.JobPortalUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Primary
 @Component
 @RequiredArgsConstructor
 public class JobPortalUsernamePwdAuthenticationProvider implements AuthenticationProvider {

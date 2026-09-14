@@ -1,6 +1,8 @@
 package com.eazybytes.jobportal.job;
 
+import com.eazybytes.jobportal.dto.JobApplicationDto;
 import com.eazybytes.jobportal.dto.JobDto;
+import com.eazybytes.jobportal.dto.UpdateJobApplicationDto;
 import com.eazybytes.jobportal.job.service.IJobService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,5 +59,23 @@ public class JobController {
 
         return ResponseEntity.ok()
                              .body(updatedJob);
+    }
+
+    @GetMapping("/applications/{jobId}/employer")
+    public ResponseEntity <List<JobApplicationDto>>getApplicationsByJobForEmployer(@PathVariable Long jobId) {
+
+        List <JobApplicationDto> jobApplications = jobService.getApplicationsByJobForEmployer(jobId);
+        return ResponseEntity.ok(jobApplications);
+    }
+
+    @PatchMapping("/applications/employer")
+    public ResponseEntity<String> updateJobApplication(@RequestBody @Valid UpdateJobApplicationDto updateJobApplicationDto){
+
+       boolean isUpdated = jobService.updateJobApplication(updateJobApplicationDto);
+
+       if (!isUpdated){
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to update application");
+       }
+        return ResponseEntity.ok("Application updated successfully");
     }
 }
