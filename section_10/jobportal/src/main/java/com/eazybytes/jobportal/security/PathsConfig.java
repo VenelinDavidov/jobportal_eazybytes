@@ -25,7 +25,8 @@ public class PathsConfig {
                 "/api/v3/api-docs/**",
                 "/swagger-resources/**",
                 "/swagger-ui.html",
-                "/webjars/**"
+                "/webjars/**",
+                "/jobportal/actuator/**"
         );
     }
 
