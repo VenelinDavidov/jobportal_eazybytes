@@ -9,3 +9,9 @@ services:
       MYSQL_DATABASE: jobportal
     volumes:
       - ./jobportal-data:/var/lib/mysqldo
+  grafana-lgtm:
+    image: 'grafana/otel-lgtm:latest'
+    ports:
+      - '3000:3000'
+      - '4317:4317'
+      - '4318:4318'

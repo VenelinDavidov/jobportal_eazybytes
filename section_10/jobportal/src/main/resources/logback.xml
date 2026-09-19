@@ -18,6 +18,9 @@
         </encoder>
     </appender>
 
+    <appender name="OTEL" class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
+    </appender>
+
     <!-- ===================== -->
     <!-- Rolling File Appender -->
     <!-- ===================== -->
@@ -49,6 +52,7 @@
         <!-- ===================== -->
         <root level="ERROR">
             <appender-ref ref="RollingFile"/>
+            <appender-ref ref="OTEL"/>
         </root>
         <!-- ===================== -->
         <!-- Application-specific ERROR logs -->
@@ -66,6 +70,7 @@
         <!-- ===================== -->
         <root level="INFO">
             <appender-ref ref="RollingFile"/>
+            <appender-ref ref="OTEL"/>
         </root>
         <!-- ===================== -->
         <!-- Application-specific ERROR logs -->
@@ -74,6 +79,7 @@
                 level="INFO"
                 additivity="false">
             <appender-ref ref="RollingFile"/>
+            <appender-ref ref="OTEL"/>
         </logger>
     </springProfile>
 
@@ -84,6 +90,7 @@
         <root level="INFO">
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFile"/>
+            <appender-ref ref="OTEL"/>
         </root>
         <!-- ===================== -->
         <!-- Application-specific ERROR logs -->
@@ -93,6 +100,7 @@
                 additivity="false">
             <appender-ref ref="Console"/>
             <appender-ref ref="RollingFile"/>
+            <appender-ref ref="OTEL"/>
         </logger>
     </springProfile>
 
