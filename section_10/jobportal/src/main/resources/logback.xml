@@ -13,7 +13,7 @@
               class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                %green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %cyan(%msg%n)
+                %green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %magenta([traceId=%X{traceId} spanId=%X{spanId}]) - %cyan(%msg%n)
             </pattern>
         </encoder>
     </appender>
